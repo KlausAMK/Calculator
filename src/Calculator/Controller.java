@@ -2,33 +2,54 @@ package Calculator;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+
+import java.util.Map;
 
 
 public class Controller {
+    @FXML
+    private MenuItem closeItem;
+
     @FXML
     private Label historyValue;
 
     @FXML
     private Label resultValue;
+
     @FXML
     private Button numC;
 
+    @FXML
+    private VBox vBox;
+
     private String operator = "";
     private String number1 = "";
+    private String currentResult = "";
+    private char lastChar;
     private boolean clear = false;
+    private int simpleMindedCounter = 0;
 
 
-    //http://code.makery.ch/blog/javafx-8-event-handling-examples/
+    public void throwAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Hello! It's me the simple-minded calculator");
+        alert.setContentText("I can't handle more than one operator at the same time!");
+        alert.showAndWait();
+    }
 
 
     public String numDuplicates(String buttonKey, char lastChar, String currentResult) {
@@ -42,26 +63,28 @@ public class Controller {
         return currentResult + buttonKey;
     }
 
-    @FXML
-    private void handleNumButtons(ActionEvent e) {
-        reset();
-        String currentResult = resultValue.getText();
-        char lastChar = currentResult.charAt(currentResult.length() - 1);
-        String buttonKey = ((Button) e.getSource()).getText();
-        resultValue.setText(numDuplicates(buttonKey, lastChar, currentResult));
 
+    private void numButtons(String buttonKey) {
+        reset();
+        currentResult = resultValue.getText();
+        lastChar = currentResult.charAt(currentResult.length() - 1);
+        resultValue.setText(numDuplicates(buttonKey, lastChar, currentResult));
     }
 
 
-    @FXML
-    private void handleOperatorButtons(ActionEvent e) {
-        reset();
+    private void operatorButtons(String buttonKey) {
 
+        reset();
         String currentHistory = historyValue.getText();
-        String buttonKey = ((Button) e.getSource()).getText();
 
 
         if (!"=".equals(buttonKey)) {
+            simpleMindedCounter++;
+            if (simpleMindedCounter >= 2) {
+                throwAlert();
+                simpleMindedCounter = 0;
+                return;
+            }
             operator = buttonKey;
             historyValue.setText(currentHistory + resultValue.getText() + operator);
             number1 = resultValue.getText();
@@ -72,10 +95,20 @@ public class Controller {
                 resultValue.setText(String.valueOf(new Math().calclulate(Double.parseDouble(number1), Double.parseDouble(resultValue.getText()), operator)));
                 clear = true;
                 saveHistory(historyValue.getText() + " = " + resultValue.getText());
+                simpleMindedCounter = 0;
             }
         }
+    }
+
+    @FXML
+    private void handleNumButtons(ActionEvent e) {
+        numButtons(((Button) e.getSource()).getText());
+    }
 
 
+    @FXML
+    private void handleOperatorButtons(ActionEvent e) {
+        operatorButtons(((Button) e.getSource()).getText());
     }
 
     private void reset() {
@@ -89,10 +122,9 @@ public class Controller {
 
 
     public void saveHistory(String s) {
-
         LocalDate localDate = LocalDate.now();
         try {
-            Files.write(Paths.get("./History.txt"), ( localDate.toString() + " >> "+ s + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.write(Paths.get("./History.txt"), (localDate.toString() + " >> " + s + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,9 +134,37 @@ public class Controller {
 
     @FXML
     private void initialize() {
+        closeItem.setOnAction(e -> Main.closeMe());
+
         numC.setOnAction(e -> {
             resultValue.setText("0");
             historyValue.setText("");
+        });
+
+        vBox.setOnKeyPressed(e -> {
+            Map<Integer, String> operatorMap = Map.of(106, "*", 107, "+", 109, "-", 110, ".",
+                    111, "/");
+
+
+            currentResult = resultValue.getText();
+            lastChar = currentResult.charAt(currentResult.length() - 1);
+
+            int keyCode = e.getCode().getCode();
+
+            if (keyCode >= 106 && keyCode <= 111) {
+                operator = operatorMap.get(keyCode);
+            }
+
+            if (keyCode >= 96 && keyCode <= 105)
+                keyCode -= 48;
+
+
+            if (("1234567890/".indexOf((char) keyCode) != -1)) {
+                numButtons(Character.toString((char) keyCode));
+            } else {
+                if ("/*-+.".contains(operator))
+                    operatorButtons(operator);
+            }
         });
     }
 

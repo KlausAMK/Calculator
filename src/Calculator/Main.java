@@ -7,15 +7,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+   private static Stage window;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        window = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("UserInterface.fxml"));
         primaryStage.setTitle("Calculator");
+        primaryStage.setOnCloseRequest(e -> Main.closeMe());
         primaryStage.setResizable(false);
 
         primaryStage.setScene(new Scene(root, 600, 300));
         primaryStage.show();
+    }
+
+    public static void closeMe(){
+        window.close();
     }
 
 
