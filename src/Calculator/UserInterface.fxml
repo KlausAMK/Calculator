@@ -69,7 +69,7 @@
             </rowConstraints>
             <children>
                 <Button fx:id="numC" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="C" />
-                <Button fx:id="numSubstract" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="/" GridPane.columnIndex="3" />
+                <Button fx:id="numSubstract" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleOperatorButtons" text="/" GridPane.columnIndex="3" />
             </children>
             <padding>
                 <Insets left="5.0" right="5.0" top="5.0" />

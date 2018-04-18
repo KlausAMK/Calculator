@@ -12,6 +12,8 @@ public class Controller {
 
     @FXML
     private Label resultValue;
+    @FXML
+    private Button numC;
 
     private String operator = "";
     private String number1 = "";
@@ -67,6 +69,12 @@ public class Controller {
 
 
 
+    }
+
+
+    @FXML
+    private void initialize() {
+        numC.setOnAction(e -> resultValue.setText("0"));
     }
 
 
