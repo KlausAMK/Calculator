@@ -43,7 +43,7 @@ public class Controller {
     private int simpleMindedCounter = 0;
 
 
-    public void throwAlert() {
+    private void throwAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Hello! It's me the simple-minded calculator");
@@ -52,7 +52,7 @@ public class Controller {
     }
 
 
-    public String numDuplicates(String buttonKey, char lastChar, String currentResult) {
+    private String numDuplicates(String buttonKey, char lastChar, String currentResult) {
         if (buttonKey.equals("0") && currentResult.length() == 1 && lastChar == '0') {
             buttonKey = "";
         } else {
