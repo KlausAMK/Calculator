@@ -2,3 +2,4 @@
 *.iml
 out
 /History.txt
+/src/META-INF/MANIFEST.MF
