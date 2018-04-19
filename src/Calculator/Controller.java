@@ -48,7 +48,7 @@ public class Controller {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Hello! It's me the simple-minded calculator");
-        alert.setContentText("I can't handle more than one operator at the same time!");
+        alert.setContentText("I can't handle more than one operator at a time!");
         alert.showAndWait();
     }
 
