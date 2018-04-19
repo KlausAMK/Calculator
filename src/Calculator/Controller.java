@@ -65,6 +65,8 @@ public class Controller {
     }
 
     private String numDuplicates(String buttonKey, char lastChar, String currentResult) {
+        if(buttonKey.equals(".") && currentResult.contains("."))
+            buttonKey = "";
         if (buttonKey.equals("0") && currentResult.length() == 1 && lastChar == '0') {
             buttonKey = "";
         } else {
