@@ -106,7 +106,6 @@ public class Controller {
                 resultValue.setText(String.valueOf(new Math().calclulate(Double.parseDouble(number1), Double.parseDouble(resultValue.getText()), operator)));
                 clear = true;
                 saveHistory(historyValue.getText() + " = " + resultValue.getText());
-                simpleMindedCounter = 0;
             }
         }
     }
