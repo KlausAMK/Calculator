@@ -171,10 +171,10 @@ public class Controller {
                 keyCode -= 48;
 
 
-            if (("1234567890".indexOf((char) keyCode) != -1)) {
+            if (("1234567890.".indexOf((char) keyCode) != -1)) {
                 numButtons(Character.toString((char) keyCode));
             } else {
-                if ("/*-+.".contains(operator))
+                if ("/*-+".contains(operator))
                     operatorButtons(operator);
             }
         });
