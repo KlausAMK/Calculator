@@ -17,6 +17,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Controller {
@@ -40,7 +42,6 @@ public class Controller {
     private String currentResult = "";
     private char lastChar;
     private boolean clear = false;
-    private int simpleMindedCounter = 0;
 
 
     private void throwAlert() {
@@ -51,6 +52,17 @@ public class Controller {
         alert.showAndWait();
     }
 
+
+    private int getOperatorCount(String text) {
+        Pattern p = Pattern.compile("\\+|\\-|\\/|\\*");
+        Matcher m = p.matcher(text);
+        int count = 0;
+        while (m.find())
+            count++;
+        return count;
+
+
+    }
 
     private String numDuplicates(String buttonKey, char lastChar, String currentResult) {
         if (buttonKey.equals("0") && currentResult.length() == 1 && lastChar == '0') {
@@ -79,10 +91,9 @@ public class Controller {
 
 
         if (!"=".equals(buttonKey)) {
-            simpleMindedCounter++;
-            if (simpleMindedCounter >= 2) {
+            if (getOperatorCount(historyValue.getText()) >= 1) {
                 throwAlert();
-                simpleMindedCounter = 0;
+                resultValue.setText(resultValue.getText());
                 return;
             }
             operator = buttonKey;
@@ -159,7 +170,7 @@ public class Controller {
                 keyCode -= 48;
 
 
-            if (("1234567890/".indexOf((char) keyCode) != -1)) {
+            if (("1234567890".indexOf((char) keyCode) != -1)) {
                 numButtons(Character.toString((char) keyCode));
             } else {
                 if ("/*-+.".contains(operator))
