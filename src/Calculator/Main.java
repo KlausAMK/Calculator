@@ -6,11 +6,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
-   private static Stage window;
+/**
+ * Calculator program implements an application that
+ * can solve simple math problems.
+ *
+ * @author Ryhmä3
+ * *@version 1.0
+ * @since 2018-04-19
+ */
 
+
+public class Main extends Application {
+    private static Stage window;
+
+    /**
+     * start method that loads FXML file and launches the userinterface.
+     *
+     * @param primaryStage is the Stage that is used by the application.
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("UserInterface.fxml"));
         primaryStage.setTitle("Calculator");
@@ -21,7 +36,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static void closeMe(){
+    /**
+     * closeMe method is used to exit application
+     */
+    public static void closeMe() {
         window.close();
     }
 

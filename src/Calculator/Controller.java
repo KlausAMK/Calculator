@@ -21,6 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+/**
+ *
+ */
 public class Controller {
     @FXML
     private MenuItem closeItem;
@@ -43,7 +46,9 @@ public class Controller {
     private char lastChar;
     private boolean clear = false;
 
-
+    /**
+     * throwAlert method will show a simple Error screen using JavaFX Alert class.
+     */
     private void throwAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
@@ -52,7 +57,12 @@ public class Controller {
         alert.showAndWait();
     }
 
-
+    /**
+     * getOperatorCount method count's operators from the given param.
+     *
+     * @param text String object where the regex pattern is applied.
+     * @return amount of operators found
+     */
     private int getOperatorCount(String text) {
         Pattern p = Pattern.compile("\\+|\\-|\\/|\\*");
         Matcher m = p.matcher(text);
@@ -64,8 +74,16 @@ public class Controller {
 
     }
 
+    /**
+     * numDuplicates method removes if they are "bad" ones (0 . )
+     *
+     * @param buttonKey     is the key that is used currently
+     * @param currentResult is the value which we will use to find duplicates from
+     * @param lastChar      is the last character of the currentResult
+     * @return fixed input text
+     */
     private String numDuplicates(String buttonKey, char lastChar, String currentResult) {
-        if(buttonKey.equals(".") && currentResult.contains("."))
+        if (buttonKey.equals(".") && currentResult.contains("."))
             buttonKey = "";
         if (buttonKey.equals("0") && currentResult.length() == 1 && lastChar == '0') {
             buttonKey = "";
@@ -77,7 +95,11 @@ public class Controller {
         return currentResult + buttonKey;
     }
 
-
+    /**
+     * numButtons method handles numeric buttons.
+     *
+     * @param buttonKey is the key that is used currently.
+     */
     private void numButtons(String buttonKey) {
         reset();
         currentResult = resultValue.getText();
@@ -85,7 +107,12 @@ public class Controller {
         resultValue.setText(numDuplicates(buttonKey, lastChar, currentResult));
     }
 
-
+    /**
+     * operatorButtons method handles operator buttons and
+     * gives the values to calculate method.
+     *
+     * @param buttonKey is the key that is used currently.
+     */
     private void operatorButtons(String buttonKey) {
 
         reset();
@@ -112,17 +139,31 @@ public class Controller {
         }
     }
 
+
+    /**
+     * handleButtons method will add Event handler to all numeric buttons.
+     *
+     * @param e A semantic event which indicates that a component-defined action occurred.
+     */
     @FXML
     private void handleNumButtons(ActionEvent e) {
         numButtons(((Button) e.getSource()).getText());
     }
 
 
+    /**
+     * handleOperatorButtons method will add Event handler to all operator buttons.
+     *
+     * @param e A semantic event which indicates that a component-defined action occurred.
+     */
     @FXML
     private void handleOperatorButtons(ActionEvent e) {
         operatorButtons(((Button) e.getSource()).getText());
     }
 
+    /**
+     * reset method resets values from resultValue and historyValue.
+     */
     private void reset() {
         if (clear) {
             resultValue.setText("0");
@@ -132,7 +173,11 @@ public class Controller {
         }
     }
 
-
+    /**
+     * saveHistory method saves the given text into file
+     *
+     * @param s Text to save
+     */
     public void saveHistory(String s) {
         LocalDate localDate = LocalDate.now();
         try {
@@ -143,6 +188,10 @@ public class Controller {
 
     }
 
+    /**
+     * initialize method will add event handles for several buttons and
+     * setups the logic behind keyboard input
+     */
 
     @FXML
     private void initialize() {
