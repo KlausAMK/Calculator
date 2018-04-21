@@ -178,7 +178,7 @@ public class Controller {
      *
      * @param s Text to save
      */
-    public void saveHistory(String s) {
+    private void saveHistory(String s) {
         LocalDate localDate = LocalDate.now();
         try {
             Files.write(Paths.get("./History.txt"), (localDate.toString() + " >> " + s + System.lineSeparator()).getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -192,7 +192,6 @@ public class Controller {
      * initialize method will add event handles for several buttons and
      * setups the logic behind keyboard input
      */
-
     @FXML
     private void initialize() {
         closeItem.setOnAction(e -> Main.closeMe());
